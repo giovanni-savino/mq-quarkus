@@ -2,7 +2,6 @@ package my.groupId;
 
 import javax.jms.JMSException;
 
-import java.util.logging.*;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

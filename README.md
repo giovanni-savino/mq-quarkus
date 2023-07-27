@@ -19,10 +19,20 @@ and then importing the standard JMS classese of [this](https://github.com/ibm-me
 ## Run the local demo environment
 
 1. Clone the following repo and go to the quarkys/my-artifactId directory
-
-2. Configure the MQ endpoint -> at the moment editing the static variables in the src/java/my/groupId/ContectCreation.java file -> Next realase edit from env variables
+```console
+git clone https://github.com/giovanni-savino/mq-quarkus.git
+```
+2. Configure the MQ endpoint -> at the moment editing the static variables are in the [src/java/my/groupId/ContectCreation.java](quarkus/my-artifactId/src/main/java/my/groupId/ContexCreation.java) file
 The current static parameters are:
-
+```console
+HOST= "localhost"
+PORT= 1414
+CHANNEL= "DEV.APP.SVRCONN"
+QMGR="QM1"
+APP_USER="app"
+APP_PASSWORD="passw0rd"
+QUEUE_NAME="DEV.QUEUE.1"
+```
 3. Run the mvn project
 ```console
 ./mvnw quarkus:dev
@@ -39,4 +49,9 @@ curl http://localhost:8080/put
 ```
 Get message from the queue are displayed in log terminal
 
+
+# APPENDIX
+
+## Run a local MQ dev container 
+In order to start it is possible to use a basic MQ dev image with podman or docker
 
