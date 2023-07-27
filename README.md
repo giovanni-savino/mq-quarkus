@@ -6,7 +6,7 @@ If you want to use Quarkus native mode (GraalVM), please refers to (this)[https:
 This repo was configured by starting a basic Quarkus environment with the following command:
 ```console
 ./mvnw quarkus:dev
-```console
+```
 and then importing the standard JMS classese of (this)[https://github.com/ibm-messaging/mq-dev-patterns/tree/master/JMS] repo
 
 
@@ -26,12 +26,12 @@ The current static parameters are:
 3. Run the mvn project
 ```console
 ./mvnw quarkus:dev
-```console
+```
 
 3. To simulate a put message, you can open a browser on the dev enviroment and start a put message or curl the /put api
 ```console
 curl http://localhost:8080/put
-```console
+```
 Get message from the queue are displayed in log terminal
 
 
