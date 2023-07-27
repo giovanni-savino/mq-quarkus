@@ -5,10 +5,25 @@ If you want to use Quarkus native mode (GraalVM), please refers to [this](https:
 
 This repo was configured by starting a basic Quarkus environment with the following command:
 ```console
-./mvnw quarkus:dev
+mvn io.quarkus.platform:quarkus-maven-plugin:3.2.2.Final:create \
+    -DprojectGroupId=my-groupId \
+    -DprojectArtifactId=my-artifactId
 ```
 and then importing the standard JMS classese of [this](https://github.com/ibm-messaging/mq-dev-patterns/tree/master/JMS) repo
 
+We edited the pom.xml file and added the following dependency:
+```console
+<dependency>
+        <groupId>javax.jms</groupId>
+        <artifactId>javax.jms-api</artifactId>
+        <version>2.0.1</version>
+</dependency>
+<dependency>
+        <groupId>com.ibm.mq</groupId>
+        <artifactId>com.ibm.mq.allclient</artifactId>
+        <version>9.3.3.0</version>
+</dependency>
+```
 
 ## Prerequisite
 * An IBM MQ deployed and configured
@@ -53,5 +68,11 @@ Get message from the queue are displayed in log terminal
 # APPENDIX
 
 ## Run a local MQ dev container 
-In order to start it is possible to use a basic MQ dev image with podman or docker
-
+If you wante to use a local MQ container, it is possible to use a basic [MQ dev image](https://developer.ibm.com/tutorials/mq-connect-app-queue-manager-containers/) with podman or docker
+```console
+ docker run --env LICENSE=accept --env MQ_QMGR_NAME=QM1 --publish 1414:1414 --publish 9443:9443 --detach --env MQ_APP_PASSWORD=passw0rd --name QM1 icr.io/ibm-messaging/mq:latest
+```
+If you want to access to the console you can open the browser on the url and access with *admin* user
+```console
+https://localhost:9443/ibmmq/console/login.html
+```
