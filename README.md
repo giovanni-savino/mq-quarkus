@@ -36,6 +36,7 @@ We edited the pom.xml file and added the following dependency:
 1. Clone the following repo and go to the quarkys/my-artifactId directory
 ```console
 git clone https://github.com/giovanni-savino/mq-quarkus.git
+cd mq-quarkus/quarkus/my-artifactId/
 ```
 2. Configure the MQ endpoint -> at the moment editing the static variables are in the [src/java/my/groupId/ContectCreation.java](quarkus/my-artifactId/src/main/java/my/groupId/ContexCreation.java) file
 The current static parameters are:
