@@ -13,8 +13,6 @@ import jakarta.ws.rs.core.MediaType;
 
 @Path("/put")
 public class PutAPI {
-    private static final Logger logger = Logger.getLogger("com.ibm.mq.samples.jms");
-
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String put() throws JMSException {
