@@ -42,8 +42,9 @@ public class JmsGet implements Runnable{
 
     private static long TIMEOUTTIME = 5000;  // 5 Seconds
     
-    private static JMSContext context;
-    private static Destination destination;
+    private static JMSContext context = ContexCreation.getContext();
+
+    private static Destination destination = ContexCreation.getDestination();
     private static JMSConsumer consumer;
     private static boolean continueProcessing = true;
 
