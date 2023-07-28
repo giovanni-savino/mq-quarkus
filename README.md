@@ -65,6 +65,8 @@ curl http://localhost:8080/put
 ```
 Get message from the queue are displayed in log terminal
 
+NOTE: Message on DEV.QUEUE.1 are write from the put and read from the get, there won't message remaining on the queue.
+4. If you want to put a single message on a queue without any read, you can use the following sample POST
 
 # APPENDIX
 
@@ -73,7 +75,7 @@ If you wante to use a local MQ container, it is possible to use a basic [MQ dev 
 ```console
  docker run --env LICENSE=accept --env MQ_QMGR_NAME=QM1 --publish 1414:1414 --publish 9443:9443 --detach --env MQ_APP_PASSWORD=passw0rd --name QM1 icr.io/ibm-messaging/mq:latest
 ```
-If you want to access to the console you can open the browser on the url and access with *admin* user
+To access the console open the browser on the url with *admin* user
 ```console
 https://localhost:9443/ibmmq/console/login.html
 ```
