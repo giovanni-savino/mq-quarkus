@@ -63,10 +63,11 @@ or start a put message with a curl
 ```console
 curl http://localhost:8080/put
 ```
-Get message from the queue are displayed in log terminal
 
-NOTE: Message on DEV.QUEUE.1 are write from the put and read from the get, there won't message remaining on the queue.
-4. If you want to put a single message on a queue without any read, you can use the following sample POST
+To get all the messages on the queue you can run:
+```console
+curl http://localhost:8080/get
+```
 
 # APPENDIX
 
@@ -79,3 +80,57 @@ To access the console open the browser on the url with *admin* user
 ```console
 https://localhost:9443/ibmmq/console/login.html
 ```
+
+## Run a local MQ + MQ source&Sink + KafkaConnect + Strimzi
+If you want to test an End 2 End scenario on your local laptop where a message is:
+* Sent message to a MQ queue (DEV.QUEUE.1)
+* Use MQ source to write to a Kafka topic (mq-source)
+* Use MQ sink to read from the Kafka topic and write a on a different queue (DEV.QUEUE.2) 
+
+You can use the /local docker-compose file to deploy all the components
+
+To understand how to build and use the local MQ source connector, please refers to [this](https://github.com/ibm-messaging/kafka-connect-mq-source/blob/master/UsingMQwithKafkaConnect.md) repo
+
+To run the local test environment, go to the /local directory and run 
+```console
+cd /local
+docker-compose up -d
+```
+A set of 6 containers are started:
+* A Kafka broker
+* A kafka zookeeper
+* An MQ broker
+* An MQ source connector
+* An MQ sink connector
+* A SampleMQQuarkusApp container
+
+To configure the MQ source and Sink connectors you need to run the commands
+```console
+curl -X POST -H "Content-Type: application/json" http://localhost:8083/connectors \
+  --data @mq-sink.json
+
+curl -X POST -H "Content-Type: application/json" http://localhost:8083/connectors \
+  --data @mq-source.json
+
+```console
+To start the scnario you need to open a terminal to see messages on the kafka topic 
+```console
+ docker  exec -it $(docker ps | grep kafka-ser | awk '{print $1}') bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mq-source
+```
+
+On another terminal run the command to put messages on the first queue:
+```console
+curl http://localhost:8080/put
+```
+To see the messages on the last step you can run open the browser to see the message on the MQ queue DEV.QUEUE.2
+
+```console
+https://localhost:9443/ibmmq/console/#/manage/qmgr/QM1/queue/local/DEV.QUEUE.2/view
+```
+
+
+## Run a remote MQ + MQ source&Sink + KafkaConnect + Strimzi
+If you want to test an End 2 End scenario on a remote OCP where a message is:
+* Sent to a MQ queue
+* Use MQ source to write to a Kafka topic
+* Use MQ sink to read from the Kafkat topic and write a on a different queue you can use the /OCP files to deploy all the components

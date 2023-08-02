@@ -10,11 +10,11 @@ import jakarta.ws.rs.core.MediaType;
 
 // Sample API to put a message on the queue
 
-@Path("/put")
-public class PutAPI {
+@Path("/get")
+public class GetAPI {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String put() throws JMSException {
-    return Jms.put();
+    public String get() throws JMSException {
+    return Jms.get();
     }
 }
