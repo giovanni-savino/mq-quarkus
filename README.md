@@ -81,7 +81,7 @@ To access the console open the browser on the url with *admin* user
 https://localhost:9443/ibmmq/console/login.html
 ```
 
-## Run a local MQ + MQ source&Sink + KafkaConnect + Strimzi
+## Run a local MQ + MQ Surce and Sink on KafkaConnect + Strimzi(Kafka)
 If you want to test an End 2 End scenario on your local laptop where a message is:
 * Sent message to a MQ queue (DEV.QUEUE.1)
 * Use MQ source to write to a Kafka topic (mq-source)
@@ -96,12 +96,11 @@ To run the local test environment, go to the /local directory and run
 cd /local
 docker-compose up -d
 ```
-A set of 6 containers are started:
+A set of 5 containers are started:
 * A Kafka broker
 * A kafka zookeeper
 * An MQ broker
-* An MQ source connector
-* An MQ sink connector
+* An MQ Source + Sink connector
 * A SampleMQQuarkusApp container
 
 To configure the MQ source and Sink connectors you need to run the commands
@@ -127,9 +126,9 @@ To see the messages on the last step you can run open the browser to see the mes
 ```console
 https://localhost:9443/ibmmq/console/#/manage/qmgr/QM1/queue/local/DEV.QUEUE.2/view
 ```
+with credential admin/passw0rd
 
-
-## Run a remote MQ + MQ source&Sink + KafkaConnect + Strimzi
+## Run a Openshift MQ + MQ Surce and Sink on KafkaConnect + Strimzi(Kafka)
 If you want to test an End 2 End scenario on a remote OCP where a message is:
 * Sent to a MQ queue
 * Use MQ source to write to a Kafka topic

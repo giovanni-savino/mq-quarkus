@@ -40,13 +40,13 @@ services:
       MQ_APP_PASSWORD: passw0rd
 
   mq-source:
-    image: kafkaconnect-with-mq-source-sink:1.0
+    image: quay.io/giovanni_savino_it/kafkaconnect-with-mq-source-sink:1.0
     ports:
     - "8083:8083"
     volumes:
       - ${PWD}/config:/opt/kafka/config
   samplemqquarkusapp:
-    image: samplemqquarkusapp:1.0
+    image: quay.io/giovanni_savino_it/samplemqquarkusapp:1.0
     ports:
     - "8080:8080"
     environment:
