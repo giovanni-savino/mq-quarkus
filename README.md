@@ -3,6 +3,11 @@ This sample code shows a sample use of Quarkus on *traditional JVM* and JMS 2.0 
 
 If you want to use Quarkus native mode (GraalVM), please refers to [this](https://github.com/ibm-messaging/mq-dev-patterns/tree/master/amqp-qpid) tutorial
 
+To simply deploy a sample scenario with docker-composer please refers to [APPENDIX](#run-a-local-mq--mq-surce-and-sink-on-kafkaconnect--strimzikafka)
+
+If you want to deploy the same scenario on OpenshiftCluster, plese refers to [APPENDIX](#run-a-openshift-mq--mq-surce-and-sink-on-kafkaconnect--strimzikafka) 
+
+## Built details
 This repo was configured by starting a basic Quarkus environment with the following command:
 ```console
 mvn io.quarkus.platform:quarkus-maven-plugin:3.2.2.Final:create \
@@ -111,7 +116,7 @@ curl -X POST -H "Content-Type: application/json" http://localhost:8083/connector
 curl -X POST -H "Content-Type: application/json" http://localhost:8083/connectors \
   --data @mq-source.json
 
-```console
+```
 To start the scnario you need to open a terminal to see messages on the kafka topic 
 ```console
  docker  exec -it $(docker ps | grep kafka-ser | awk '{print $1}') bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mq-source
@@ -133,3 +138,8 @@ If you want to test an End 2 End scenario on a remote OCP where a message is:
 * Sent to a MQ queue
 * Use MQ source to write to a Kafka topic
 * Use MQ sink to read from the Kafkat topic and write a on a different queue you can use the /OCP files to deploy all the components
+
+The following resources are deployed:
+
+
+### Use ArgoCD to deploy all the components
