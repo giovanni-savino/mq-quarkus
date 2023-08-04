@@ -66,18 +66,21 @@ public class Jms {
       private static JMSConsumer consumer = null;
   
 
-    void onStart(@Observes StartupEvent ev) {
+    void onStart(@Observes StartupEvent ev)  throws JMSException {
         initialiseLogging();
         setEnvVar();
-        logger.info("Put application is starting");
+        logger.info("Application is starting");
 
         JmsConnectionFactory connectionFactory = createJMSConnectionFactory();
         setJMSProperties(connectionFactory);
         logger.info("created connection factory");
-
+         try {
         context = connectionFactory.createContext();
         logger.info("context created");
-
+         }
+         catch(JMSRuntimeException ex){
+        logger.warning("Context not created, check channel credential");
+         }
         // Set targetClient to be non JMS, so no JMS headers are transmitted.
         // Only one of these settings is required, but both shown here.
         // 1. Add targetClient parameter to Queue uri
@@ -202,6 +205,7 @@ public class Jms {
          } else {
               ReturnedVar= System.getenv(EnvVar);
           }
+        logger.info("Returned var:"+ ReturnedVar);
         return ReturnedVar;
   }
 

@@ -1,0 +1,16 @@
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafkaconnect-service
+  labels:
+    app: kafkaconnect-service
+spec:
+  type: ClusterIP
+  ports:
+    - name: kafkaconnect
+      protocol: TCP
+      port: 8083
+  selector:
+      app: kafkaconnect-with-mq-source-sink

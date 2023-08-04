@@ -5,7 +5,7 @@ If you want to use Quarkus native mode (GraalVM), please refers to [this](https:
 
 To simply deploy a sample scenario with docker-composer please refers to [APPENDIX](#run-a-local-mq--mq-surce-and-sink-on-kafkaconnect--strimzikafka)
 
-If you want to deploy the same scenario on OpenshiftCluster, plese refers to [APPENDIX](#run-a-openshift-mq--mq-surce-and-sink-on-kafkaconnect--strimzikafka) 
+If you want to deploy the same scenario on OpenshiftCluster, plese refers to [APPENDIX](#openshift-run-a-mq--mq-surce-and-sink-on-kafkaconnect--strimzikafka) 
 
 ## Built details
 This repo was configured by starting a basic Quarkus environment with the following command:
@@ -133,13 +133,39 @@ https://localhost:9443/ibmmq/console/#/manage/qmgr/QM1/queue/local/DEV.QUEUE.2/v
 ```
 with credential admin/passw0rd
 
-## Run a Openshift MQ + MQ Surce and Sink on KafkaConnect + Strimzi(Kafka)
+## Openshift: Run a  MQ + MQ Surce and Sink on KafkaConnect + Strimzi(Kafka)
 If you want to test an End 2 End scenario on a remote OCP where a message is:
 * Sent to a MQ queue
 * Use MQ source to write to a Kafka topic
-* Use MQ sink to read from the Kafkat topic and write a on a different queue you can use the /OCP files to deploy all the components
+* Use MQ sink to read from the Kafkat topic and write a on a different queue 
+You can use the /OCP files to deploy all the components
 
-The following resources are deployed:
+If you need to deploy a Kafka cluster you can install the Strimzi components:
+* Deploy the Strimzi Operator -> manually
+* Uncomment in the kustomization file the
+  * base/strimzi.yaml
+  * base/strimzi-kafkaconect.yaml
 
+If you want to deploy a standalone 
+
+You can deploy all the components by logging to the OCP cluster and run:
+```console
+oc apply -k OCP/
+```
+
+After you deploy all the components, you need to manually create the route to run the unit test:
+
+* Create the Route of the MQ console: console-https services on port 9443
+* Create the Route of the quarkus app: http port 8080 
+
+After you expose the Route you can run the unit test by sending sample put messages on the sample app:
+```console
+curl http://<quarkus app route>/put
+```
+And access to the MQ UI via browser to see messages on DEV.QUEUE.2
+
+```console
+curl https://<MQ console route>/
+```
 
 ### Use ArgoCD to deploy all the components

@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mq-config
+data:
+  LICENSE: accept
+  MQ_APP_PASSWORD: passw0rd
+  MQ_QMGR_NAME: QM1
+  MQ_ENABLE_EMBEDDED_WEB_SERVER: 'true'
+  LOG_FORMAT: basic
+  DEBUG: 'false'
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mq-mqsc-config
+data:
+  mqtt.mqsc: |
+      DEFINE TOPIC('TEST.BASE.TOPIC') TOPICSTR('/test') REPLACE

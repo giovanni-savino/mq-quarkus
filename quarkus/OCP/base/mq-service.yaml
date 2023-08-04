@@ -1,0 +1,19 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ibmmq
+  labels:
+    app: ibmmq
+spec:
+  ports:
+    - name: console-https
+      protocol: TCP
+      port: 9443
+      targetPort: 9443
+    - name: qmgr
+      protocol: TCP
+      port: 1414
+      targetPort: 1414
+  type: ClusterIP
+  selector:
+    app: ibmmq

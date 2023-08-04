@@ -1,0 +1,82 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: ibmmq
+  labels:
+    app: ibmmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ibmmq
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ibmmq
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      containers:
+        - resources:
+            limits:
+              cpu: 750m
+              memory: 2Gi
+            requests:
+              cpu: 750m
+              memory: 1Gi
+          readinessProbe:
+            exec:
+              command:
+                - chkmqready
+            initialDelaySeconds: 10
+            timeoutSeconds: 3
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 1
+          terminationMessagePath: /run/termination-log
+          name: qmgr
+          livenessProbe:
+            exec:
+              command:
+                - chkmqhealthy
+            initialDelaySeconds: 90
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 1
+          env:
+            - name: MQ_MULTI_INSTANCE
+              value: 'false'
+            - name: MQ_ENABLE_TRACE_STRMQM
+              value: 'false'
+            - name: MQ_EPHEMERAL_PREFIX
+              value: /run/mqm
+            - name: MQ_GRACE_PERIOD
+              value: '29'
+            - name: MQ_NATIVE_HA
+              value: 'false'
+          envFrom:
+          - configMapRef:
+              name: mq-config
+          ports:
+            - containerPort: 1414
+              protocol: TCP
+            - containerPort: 9443
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: mq-mqsc-config
+              mountPath: /etc/mqm/mqtt.mqsc
+              subPath: mqtt.mqsc
+          image: >-
+            icr.io/ibm-messaging/mq:latest
+      volumes:
+        - name: mq-mqsc-config
+          configMap:
+            name: mq-mqsc-config
+  serviceName: qm
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      partition: 0
